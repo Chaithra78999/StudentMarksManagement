@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student, Teacher & Marks Screen</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.options {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+tr:hover {
+    background-color: #f2f2f2;
+}
+
+        /* Your CSS styles */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Screen</h1>
+        <form id="addStudentForm">
+            <input type="text" id="studentNameInput" placeholder="Enter Student Name...">
+            <button type="submit">Add Student</button>
+        </form>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentBody">
+                <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h1>Teacher Screen</h1>
+        <form id="addTeacherForm">
+            <input type="text" id="teacherNameInput" placeholder="Enter Teacher Name...">
+            <button type="submit">Add Teacher</button>
+        </form>
+        <table id="teacherTable">
+            <thead>
+                <tr>
+                    <th>Teacher ID</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="teacherBody">
+                <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h1>Marks Screen</h1>
+        <form id="searchForm">
+            <input type="text" id="searchIdInput" placeholder="Enter Student or Teacher ID...">
+            <button type="submit">Search</button>
+        </form>
+        <table id="searchResultTable">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Teacher Name</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody id="searchResultBody">
+                <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Dummy data for students
+        var students = [
+            { id: 1, name: 'John Doe' },
+            { id: 2, name: 'Jane Smith' }
+        ];
+
+        // Dummy data for teachers
+        var teachers = [
+            { id: 1, name: 'Mr. Smith' },
+            { id: 2, name: 'Mrs. Johnson' }
+        ];
+
+        // Populate student table with dummy data
+        var studentBody = document.getElementById('studentBody');
+        students.forEach(function(student) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${student.id}</td>
+                <td>${student.name}</td>
+                <td>
+                    <button onclick="viewStudent(${student.id})">View</button>
+                    <button onclick="editStudent(${student.id})">Edit</button>
+                    <button onclick="deleteStudent(${student.id})">Delete</button>
+                </td>
+            `;
+            studentBody.appendChild(row);
+        });
+
+        // Populate teacher table with dummy data
+        var teacherBody = document.getElementById('teacherBody');
+        teachers.forEach(function(teacher) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${teacher.id}</td>
+                <td>${teacher.name}</td>
+                <td>
+                    <button onclick="viewTeacher(${teacher.id})">View</button>
+                    <button onclick="editTeacher(${teacher.id})">Edit</button>
+                    <button onclick="deleteTeacher(${teacher.id})">Delete</button>
+                </td>
+            `;
+            teacherBody.appendChild(row);
+        });
+
+        // Function to handle edit action for a student
+        function editStudent(studentId) {
+            alert('Edit student with ID: ' + studentId);
+        }
+
+        // Function to handle view action for a student
+        function viewStudent(studentId) {
+            alert('View student with ID: ' + studentId);
+        }
+
+        // Function to handle delete action for a student
+        function deleteStudent(studentId) {
+            alert('Delete student with ID: ' + studentId);
+        }
+
+        // Function to handle edit action for a teacher
+        function editTeacher(teacherId) {
+            alert('Edit teacher with ID: ' + teacherId);
+        }
+
+        // Function to handle view action for a teacher
+        function viewTeacher(teacherId) {
+            alert('View teacher with ID: ' + teacherId);
+        }
+
+        // Function to handle delete action for a teacher
+        function deleteTeacher(teacherId) {
+            alert('Delete teacher with ID: ' + teacherId);
+        }
+
+        var studentMarks = [
+            { studentId: 1, teacherId: 1, subject: 'Math', marks: 85 },
+            { studentId: 1, teacherId: 1, subject: 'Science', marks: 90 },
+            { studentId: 2, teacherId: 2, subject: 'English', marks: 78 }
+            // Add more dummy data as needed
+        ];
+
+        // Function to handle form submission for searching student/teacher
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var searchId = document.getElementById('searchIdInput').value;
+            var searchResultBody = document.getElementById('searchResultBody');
+            searchResultBody.innerHTML = '';
+
+            // Filter student marks based on the search ID
+            var filteredMarks = studentMarks.filter(function(mark) {
+                return mark.studentId == searchId || mark.teacherId == searchId;
+            });
+
+            // Render the filtered marks data
+            filteredMarks.forEach(function(mark) {
+                var studentName = students.find(s => s.id == mark.studentId)?.name || '';
+                var teacherName = teachers.find(t => t.id == mark.teacherId)?.name || '';
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${mark.studentId}</td>
+                    <td>${studentName}</td>
+                    <td>${teacherName}</td>
+                    <td>${mark.subject}</td>
+                    <td>${mark.marks}</td>
+                `;
+                searchResultBody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
