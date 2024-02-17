@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Basic styling for layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        input, button {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <script src="script.js"></script>
+    <div class="container">
+        <h2>Mark Management System</h2>
+        <form id="markForm">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="studentId" required><br>
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required><br>
+            <label for="score">Score:</label>
+            <input type="number" id="score" name="score" min="0" max="100" required><br>
+            <button type="submit">Add Mark</button>
+        </form>
+        <br>
+        <h2>All Marks</h2>
+        <table id="marksTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student ID</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="marksBody">
+                <!-- Marks will be displayed here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch all marks and display them in the table
+        fetch('/api/marks')
+            .then(response => response.json())
+            .then(data => {
+                const marksBody = document.getElementById('marksBody');
+                marksBody.innerHTML = ''; // Clear existing rows
+                data.forEach(mark => {
+                    const row = `
+                        <tr>
+                            <td>${mark.id}</td>
+                            <td>${mark.studentId}</td>
+                            <td>${mark.subject}</td>
+                            <td>${mark.score}</td>
+                        </tr>
+                    `;
+                    marksBody.innerHTML += row;
+                });
+            });
+
+        // Handle form submission to add a new mark
+        document.getElementById('markForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const markData = {
+                studentId: formData.get('studentId'),
+                subject: formData.get('subject'),
+                score: formData.get('score')
+            };
+            fetch('/api/marks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(markData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Add new mark to the table
+                const marksBody = document.getElementById('marksBody');
+                const newRow = `
+                    <tr>
+                        <td>${data.id}</td>
+                        <td>${data.studentId}</td>
+                        <td>${data.subject}</td>
+                        <td>${data.score}</td>
+                    </tr>
+                `;
+                marksBody.innerHTML += newRow;
+                // Clear form fields
+                document.getElementById('markForm').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
